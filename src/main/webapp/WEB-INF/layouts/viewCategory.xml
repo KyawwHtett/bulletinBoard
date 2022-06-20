@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC  
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	<!-- listCategory -->
+	<definition name="listCategory" extends="template1">
+		<put-attribute name="title" value="listCategory" />
+		<put-attribute name="body"
+			value="/WEB-INF/pages/category/list/listCategory.jsp" />
+	</definition>
+	<!-- createCategory -->
+	<definition name="createCategory" extends="template1">
+		<put-attribute name="title" value="createCategory" />
+		<put-attribute name="body"
+			value="/WEB-INF/pages/category/create/createCategory.jsp" />
+	</definition>
+	<!-- createCategoryConfirm -->
+	<definition name="createCategoryConfirm" extends="template1">
+		<put-attribute name="title"
+			value="createCategoryConfirm" />
+		<put-attribute name="body"
+			value="/WEB-INF/pages/category/create/createCategoryConfirm.jsp" />
+	</definition>
+	<!-- editCategory -->
+	<definition name="editCategory" extends="template1">
+		<put-attribute name="title" value="editCategory" />
+		<put-attribute name="body"
+			value="/WEB-INF/pages/category/edit/editCategory.jsp" />
+	</definition>
+	<!-- editCategoryConfirm -->
+	<definition name="editCategoryConfirm" extends="template1">
+		<put-attribute name="title" value="editCategoryConfirm" />
+		<put-attribute name="body"
+			value="/WEB-INF/pages/category/edit/editCategoryConfirm.jsp" />
+	</definition>
+</tiles-definitions>

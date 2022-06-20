@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC  
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+    <!-- listPost -->
+    <definition name="listPost" extends="template1">
+        <put-attribute name="title" value="listPost" />
+        <put-attribute name="body"
+            value="/WEB-INF/pages/post/list/listPost.jsp" />
+    </definition>
+    <!-- createPost -->
+    <definition name="createPost" extends="template1">
+        <put-attribute name="title" value="createPost" />
+        <put-attribute name="body"
+            value="/WEB-INF/pages/post/create/createPost.jsp" />
+    </definition>
+    <!-- createPostConfirm -->
+    <definition name="createPostConfirm" extends="template1">
+        <put-attribute name="title" value="createPostConfirm" />
+        <put-attribute name="body"
+            value="/WEB-INF/pages/post/create/createPostConfirm.jsp" />
+    </definition>
+</tiles-definitions>

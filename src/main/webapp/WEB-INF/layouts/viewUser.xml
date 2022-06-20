@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC  
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	<!-- loginUser -->
+	<definition name="loginUser" extends="template1">
+		<put-attribute name="title" value="loginUser" />
+		<put-attribute name="body"
+			value="/WEB-INF/pages/user/login/loginUser.jsp" />
+	</definition>
+	<!-- registerUser -->
+	<definition name="registerUser" extends="template1">
+		<put-attribute name="title" value="" />
+		<put-attribute name="body"
+			value="/WEB-INF/pages/user/register/registerUser.jsp" />
+	</definition>
+	<!-- registerUserConfirm -->
+	<definition name="registerUserConfirm" extends="template1">
+		<put-attribute name="title" value="" />
+		<put-attribute name="body"
+			value="/WEB-INF/pages/user/register/registerUserConfirm.jsp" />
+	</definition>
+	<!-- createUser -->
+	<definition name="createUser" extends="template1">
+		<put-attribute name="title" value="createUser" />
+		<put-attribute name="body"
+			value="/WEB-INF/pages/user/create/createUser.jsp" />
+	</definition>
+	<!-- listUser -->
+	<definition name="listUser" extends="template1">
+		<put-attribute name="title" value="listUser" />
+		<put-attribute name="body"
+			value="/WEB-INF/pages/user/list/listUser.jsp" />
+	</definition>
+	<!-- denied -->
+	<definition name="accessDenied" extends="template1">
+		<put-attribute name="title" value="" />
+		<put-attribute name="body"
+			value="/WEB-INF/pages/error/denied.jsp" />
+	</definition>
+</tiles-definitions>
