@@ -1,27 +1,29 @@
 package cgm.ojt.bulletin.web.controller;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import cgm.ojt.bulletin.bl.dto.CategoryDto;
 import cgm.ojt.bulletin.bl.dto.PostDto;
 import cgm.ojt.bulletin.bl.service.CategoryService;
 import cgm.ojt.bulletin.bl.service.PostService;
@@ -53,10 +55,12 @@ public class PostController {
 	}
 
 	@RequestMapping(value = "/post/createConfirm", method = RequestMethod.POST)
-	public ModelAndView createPostConfirm(@ModelAttribute("postForm") @Valid PostForm postForm, BindingResult result) {
+	public ModelAndView createPostConfirm(@ModelAttribute("postForm") @Valid PostForm postForm, BindingResult result,
+			@RequestParam("imageData") String imageData) {
 		ModelAndView mv = new ModelAndView("createPost");
-//		System.out.println(postForm.getPost_categories());
-//		System.out.println(postForm.getCategory());
+		if (imageData.length() > 0) {
+			postForm.setPost_img(imageData);
+		}
 		List<Category> categoryList = this.categoryService.doGetAllCategory();
 		mv.addObject("categoryList", categoryList);
 		if (result.hasErrors()) {
@@ -64,7 +68,6 @@ public class PostController {
 		}
 		var resultLists = new ArrayList<Category>();
 		for (String categoryId : postForm.getCategory()) {
-			System.out.println(categoryId + "gggggg");
 			for (Category category : categoryList) {
 				if (Integer.parseInt(categoryId) == category.getCategory_id()) {
 					resultLists.add(category);
@@ -82,41 +85,223 @@ public class PostController {
 		return new ModelAndView("redirect:/post/list");
 	}
 
+	@SuppressWarnings("deprecation")
 	@RequestMapping(value = "/post/save", method = RequestMethod.POST)
-	public ModelAndView savePost(@ModelAttribute("postForm") PostDto postDto) {
+	public ModelAndView savePost(@ModelAttribute("postForm") PostDto postDto, HttpServletRequest request)
+			throws FileNotFoundException, IOException {
 		ModelAndView mv = new ModelAndView("redirect:/post/list");
-		for (String categoryId : postDto.getCategory()) {
-			categoryId = categoryId.replaceAll("[^\\d.]", "");
-			System.out.println(categoryId+"hello 31");
-			if (Integer.parseInt(categoryId) == 2) {
-				System.out.println("hello 3333333333333");
-			}
-			System.out.println(categoryId);
+		String postImgPath = request.getRealPath("/") + "/resources/images/" + postDto.getTitle();
+		Path uploadPath = Paths.get(postImgPath);
+		if (!Files.exists(uploadPath)) {
+			Files.createDirectories(uploadPath);
 		}
-		this.postService.doSavePost(postDto);
+		postImgPath = uploadPath + "/" + postDto.getTitle() + ".png";
+		this.postService.doSavePost(postDto, postImgPath);
 		return mv;
+		
 	}
-	
+
+	@RequestMapping(value = "/post/save", params = "back", method = RequestMethod.POST)
+	public ModelAndView cancelSavePost(@ModelAttribute("postForm") PostForm postForm) {
+		ModelAndView cancelSavePost = new ModelAndView("createPost");
+		List<Category> listCategory = this.categoryService.doGetAllCategory();
+
+		ArrayList<String> list = new ArrayList<String>();
+		for (String categoryId : postForm.getCategory()) {
+			categoryId = categoryId.replaceAll("[^\\d.]", "");
+			list.add(categoryId);
+		}
+		String[] newCategory = new String[list.size()];
+		for (int i = 0; i < list.size(); i++) {
+			newCategory[i] = list.get(i);
+		}
+		postForm.setCategory(newCategory);
+		cancelSavePost.addObject("categoryList", listCategory);
+		cancelSavePost.addObject("postForm", postForm);
+
+		return cancelSavePost;
+	}
+
 	@RequestMapping(value = "/post/list", method = RequestMethod.GET)
-	public ModelAndView postList() {
+	public ModelAndView postList(HttpServletRequest request, PostForm postForm) throws IOException {
 		ModelAndView listPost = new ModelAndView("listPost");
-		List<PostDto> postDto = this.postService.doGetAllPost();
-		listPost.addObject("listPost", postDto);
+		int currentPage = getCurrentPage(request);
+		int recordsPerPage = getRecordsPerPage(request);
+		this.getPagination(listPost, currentPage, recordsPerPage, false, postForm);
 		return listPost;
 	}
 
-//	public <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
-//		List<Map.Entry<K, V>> list = new LinkedList<Map.Entry<K, V>>(map.entrySet());
-//		Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
-//			public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
-//				return (o1.getValue()).compareTo(o2.getValue());
-//			}
-//		});
-//
-//		Map<K, V> result = new LinkedHashMap<K, V>();
-//		for (Map.Entry<K, V> entry : list) {
-//			result.put(entry.getKey(), entry.getValue());
-//		}
-//		return result;
-//	}
+	@RequestMapping(value = "/post/search", method = RequestMethod.GET)
+	public ModelAndView getSearchPost(HttpServletRequest request) throws IOException {
+		ModelAndView listPost = new ModelAndView("listPost");
+		PostForm postForm = new PostForm();
+		int currentPage = getCurrentPage(request);
+		int recordsPerPage = getRecordsPerPage(request);
+		String postSearch = request.getParameter("post_search");
+		if ((postSearch == null) || (postSearch.isEmpty())) {
+			this.getPagination(listPost, currentPage, recordsPerPage, false, postForm);
+		} else {
+			postForm.setPost_search(postSearch.trim());
+			this.getPagination(listPost, currentPage, recordsPerPage, true, postForm);
+			listPost.addObject("searchData", postSearch);
+		}
+		return listPost;
+	}
+
+	@RequestMapping(value = "/post/search", method = RequestMethod.POST)
+	public ModelAndView searchPost(@RequestParam("post_search") String postSearch, HttpServletRequest request)
+			throws IOException {
+		ModelAndView listPost = new ModelAndView("listPost");
+		PostForm postForm = new PostForm();
+		int currentPage = getCurrentPage(request);
+		int recordsPerPage = getRecordsPerPage(request);
+		if (postSearch.isEmpty()) {
+			this.getPagination(listPost, currentPage, recordsPerPage, false, postForm);
+		} else {
+			postForm.setPost_search(postSearch.trim());
+			this.getPagination(listPost, currentPage, recordsPerPage, true, postForm);
+			listPost.addObject("searchData", postSearch);
+		}
+		return listPost;
+	}
+
+	@RequestMapping(value = "/post/download", method = RequestMethod.GET)
+	public ModelAndView downloadAllPost(HttpServletResponse response) throws IOException {
+		this.postService.doDownloadAllPost(response);
+		return null;
+	}
+
+	@RequestMapping(value = "/post/edit/{id}", method = RequestMethod.GET)
+	public ModelAndView editPost(@PathVariable("id") Integer postId) throws IOException {
+		ModelAndView mv = new ModelAndView("editPost");
+		List<Category> categoryList = this.categoryService.doGetAllCategory();
+		PostDto post = this.postService.doGetPostById(postId);
+		ArrayList<String> list = new ArrayList<String>();
+		for (Category category : post.getPost_categories()) {
+			list.add(Integer.toString(category.getCategory_id()));
+		}
+		String[] newCategory = new String[list.size()];
+		for (int i = 0; i < list.size(); i++) {
+			newCategory[i] = list.get(i);
+		}
+		post.setCategory(newCategory);
+		mv.addObject("categoryList", categoryList);
+		mv.addObject("postForm", post);
+		return mv;
+	}
+
+	@RequestMapping(value = "/post/editConfirm", params = "back", method = RequestMethod.POST)
+	public ModelAndView cancelConfirmEditPost() {
+		return new ModelAndView("redirect:/post/list");
+	}
+
+	@RequestMapping(value = "/post/editConfirm", method = RequestMethod.POST)
+	public ModelAndView confirmEditPost(@ModelAttribute("postForm") @Valid PostForm postForm, BindingResult result,
+			@RequestParam("imageData") String imageData) {
+		ModelAndView mv = new ModelAndView("editPost");
+		List<Category> categoryList = this.categoryService.doGetAllCategory();
+		List<Category> resultLists = new ArrayList<Category>();
+		if (imageData.length() > 0) {
+			postForm.setPost_img(imageData);
+		}
+		ArrayList<String> firstList = new ArrayList<String>();
+		ArrayList<String> secondList = new ArrayList<String>();
+		for (Category category : categoryList) {
+			for (String stringArray : postForm.getCategory()) {
+				if (Integer.parseInt(stringArray) == category.getCategory_id()) {
+					resultLists.add(category);
+					firstList.add(category.getCategory_name());
+					;
+				}
+			}
+			secondList.add(category.getCategory_name());
+		}
+		secondList.removeAll(firstList);
+		List<Category> remainCategory = new ArrayList<Category>();
+		for (String categoryName : secondList) {
+			for (Category category : categoryList) {
+				if (category.getCategory_name() == categoryName) {
+					remainCategory.add(category);
+				}
+			}
+		}
+		mv.addObject("resultLists", resultLists);
+		mv.addObject("remainCategory", remainCategory);
+
+		mv.addObject("categoryList", categoryList);
+		if (result.hasErrors()) {
+			System.out.println("errrors");
+			return mv;
+		}
+		mv.setViewName("editPostConfirm");
+		mv.addObject("postForm", postForm);
+		return mv;
+	}
+
+	@SuppressWarnings("deprecation")
+	@RequestMapping(value = "/post/update", method = RequestMethod.POST)
+	public ModelAndView updatePost(@ModelAttribute("postForm") PostDto postDto, HttpServletRequest request)
+			throws IOException {
+		ModelAndView mv = new ModelAndView("redirect:/post/list");
+		Path path = Paths.get(request.getRealPath("/") + "/resources/images/" + postDto.getTitle());
+		String postImgPath = Files.createDirectories(path) + "/" + postDto.getTitle() + ".png";
+		this.postService.doUpdatePost(postDto, postImgPath);
+		return mv;
+	}
+
+	@RequestMapping(value = "/post/update", params = "back", method = RequestMethod.POST)
+	public ModelAndView updatePost(@ModelAttribute("postForm") PostForm postForm) {
+		ModelAndView backEditPost = new ModelAndView("editPost");
+		List<Category> listCategory = this.categoryService.doGetAllCategory();
+
+		ArrayList<String> list = new ArrayList<String>();
+		for (String categoryId : postForm.getCategory()) {
+			categoryId = categoryId.replaceAll("[^\\d.]", "");
+			list.add(categoryId);
+		}
+		String[] newCategory = new String[list.size()];
+		for (int i = 0; i < list.size(); i++) {
+			newCategory[i] = list.get(i);
+		}
+		postForm.setCategory(newCategory);
+		backEditPost.addObject("postForm", postForm);
+		backEditPost.addObject("categoryList", listCategory);
+		return backEditPost;
+	}
+
+	private int getCurrentPage(HttpServletRequest request) {
+		int currentPage = request.getParameter("currentPage") != null
+				? Integer.valueOf(request.getParameter("currentPage"))
+				: 1;
+		return currentPage;
+	}
+
+	private int getRecordsPerPage(HttpServletRequest request) {
+		int recordsPerPage = request.getParameter("recordsPerPage") != null
+				? Integer.valueOf(request.getParameter("recordsPerPage"))
+				: 8;
+		return recordsPerPage;
+	}
+
+	private void getPagination(ModelAndView listPost, int currentPage, int recordsPerPage, boolean searchResult,
+			PostForm postForm) throws IOException {
+
+		List<PostDto> postList = null;
+		if (searchResult == false) {
+			postList = this.postService.doGetAllPost();
+		} else {
+			postList = this.postService.doGetAllPostBySearchInput(postForm.getPost_search());
+		}
+		int rows = postList.size();
+		System.out.println();
+		int nOfPages = rows / recordsPerPage;
+		if (nOfPages % recordsPerPage > 0) {
+			nOfPages++;
+		}
+		List<PostDto> resultPostList = this.postService.doGetAllSearchPost(currentPage, recordsPerPage, postForm);
+		listPost.addObject("noOfPages", nOfPages);
+		listPost.addObject("currentPage", currentPage);
+		listPost.addObject("recordsPerPage", recordsPerPage);
+		listPost.addObject("listPost", resultPostList);
+	}
 }

@@ -42,7 +42,7 @@
 						<!-- form-row end.// -->
 						<div class="form-group">
 							<label>Email address : </label> <span class="form-check-label">
-									${registerConfirmForm.email } </span>
+								${registerConfirmForm.email } </span>
 							<form:hidden path="email" class="form-control" placeholder=""
 								value="${registerConfirmForm.email }" />
 						</div>
@@ -55,18 +55,19 @@
 						</div>
 						<!-- form-group end.// -->
 						<div class="form-group">
-							<label>Password : </label> <span class="form-check-label">
-								${registerConfirmForm.password } </span>
+							<label>Password : </label> <input type="password"
+								class="form-check-label border-0"
+								value="${registerConfirmForm.password }" readonly />
 							<form:hidden class="form-control" path="password"
 								value="${registerConfirmForm.password }" />
-							<br>
 						</div>
+						<!-- form-group end.// -->
 						<!-- form-group end.// -->
 						<div class="form-group mt-3 text-center">
 							<button type="submit" class="btn btn-block btn-bg-color">
 								Register</button>
-							<button type="button" class="btn btn-block btn-bg-color" onclick="history.back(1);">
-								Back</button>
+							<button type="button" class="btn btn-block btn-bg-color"
+								onclick="history.back(1);">Back</button>
 						</div>
 						<!-- form-group// -->
 					</form:form>

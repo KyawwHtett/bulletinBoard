@@ -6,8 +6,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.LockedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -73,9 +71,7 @@ public class LoginController {
 			mv.addObject("emptyPassword", "Password is required");
 			return mv;
 		}
-		System.out.println(this.authService.doIsLoggedIn());
 		UserDto userDto = this.userService.doFindUserByEmail(loginForm.getEmail());
-		System.out.println(userDto);
 		if (userDto == null) {
 			mv.addObject("errorMsg", "Email doesn't exit");
 			return mv;
@@ -87,12 +83,10 @@ public class LoginController {
 		}
 
 		this.authService.doLoadAuth(loginForm.getEmail());
-		System.out.println(this.authService.doIsLoggedIn());
 		if (this.authService.doIsLoggedIn()) {
 			mv.setViewName("redirect:/post/list");
 		}
 		session.setAttribute("LOGIN_USER", this.authService.doGetLoggedInUser());
-//		mv.addObject("loginSuccessMsg", messageSource.getMessage("M_SC_USR_0002", null, null));
 		redirectAttributes.addFlashAttribute("loginSuccessMsg", messageSource.getMessage("M_SC_USR_0002", null, null));
 		return mv;
 	}
@@ -100,6 +94,10 @@ public class LoginController {
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public ModelAndView getRegisterForm() {
 		ModelAndView mv = new ModelAndView("registerUser");
+		if (this.authService.doIsLoggedIn()) {
+			mv.setViewName("redirect:/post/list");
+			return mv;
+		}
 		RegisterForm registerForm = new RegisterForm();
 		mv.addObject("registerUserForm", registerForm);
 		return mv;
@@ -121,7 +119,7 @@ public class LoginController {
 		return mv;
 	}
 
-	@RequestMapping(value = "/register/confirm")
+	@RequestMapping(value = "/register/confirm", method = RequestMethod.POST)
 	public ModelAndView registerUserConfirm(@ModelAttribute("registerConfirmForm") UserForm registerConfrim,
 			RedirectAttributes redirectAttribute) {
 		ModelAndView mv = new ModelAndView("redirect:/post/list");
@@ -130,7 +128,6 @@ public class LoginController {
 		this.userService.doSaveUser(registerConfrim);
 		this.authService.doLoadAuth(registerConfrim.getEmail());
 		session.setAttribute("LOGIN_USER", this.authService.doGetLoggedInUser());
-//		mv.addObject("loginSuccessMsg", messageSource.getMessage("M_SC_USR_0002", null, null));
 		redirectAttribute.addFlashAttribute("loginSuccessMsg", messageSource.getMessage("M_SC_USR_0002", null, null));
 		return mv;
 	}

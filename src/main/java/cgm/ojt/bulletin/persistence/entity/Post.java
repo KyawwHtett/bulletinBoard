@@ -40,6 +40,9 @@ public class Post implements Serializable {
 
 	@Column(name = "description")
 	private String description;
+	
+	@Column(name = "post_img")
+	private String post_img;
 
 	@Column(name = "created_user_id")
 	private int created_user_id;

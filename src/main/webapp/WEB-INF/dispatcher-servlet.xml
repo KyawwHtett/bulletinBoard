@@ -25,6 +25,19 @@
 	<mvc:resources mapping="/resources/**"
 		location="/resources/" />
 
+	<!-- Interceptors -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/post/edit/*" />
+			<bean class="cgm.ojt.bulletin.bl.filter.PostAuthInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/user/profile/*" />
+			<bean
+				class="cgm.ojt.bulletin.bl.filter.UserProfileAuthInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
 		<property name="order" value="0" />
@@ -40,6 +53,7 @@
 				<value>/WEB-INF/layouts/viewUser.xml</value>
 				<value>/WEB-INF/layouts/viewPost.xml</value>
 				<value>/WEB-INF/layouts/viewCategory.xml</value>
+				<value>/WEB-INF/layouts/viewPasswordReset.xml</value>
 			</list>
 		</property>
 	</bean>
@@ -64,6 +78,7 @@
 		<property name="locations">
 			<list>
 				<value>classpath:database.properties</value>
+				<value>classpath:mail.properties</value>
 			</list>
 		</property>
 	</bean>
@@ -92,6 +107,21 @@
 			</props>
 		</property>
 	</bean>
+	
+	<!-- Mail Config -->
+    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="username" value="${mail.username}"/>
+        <property name="password" value="${mail.password}"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.transport.protocol">${mail.protocol}</prop>
+                <prop key="mail.smtp.host">${mail.host}</prop>
+                <prop key="mail.smtp.port">${mail.port}</prop>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+            </props>
+        </property>
+    </bean>
 
 	<!-- for managing transactions -->
 	<tx:annotation-driven
@@ -113,5 +143,9 @@
 
 	<bean id="bCryptPasswordEncoder"
 		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+	</bean>
+
+	<bean id="pagedListHolder"
+		class="org.springframework.beans.support.PagedListHolder">
 	</bean>
 </beans>

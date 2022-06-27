@@ -26,6 +26,7 @@ public class RegisterForm {
 	@Size(min = 6, max = 12)
 	private String password;
 	private String gender;
+	private String type;
 	private Date created_at;
 	private Date updated_at;
 	private Date deleted_at;

@@ -20,6 +20,11 @@
 textarea {
 	height: 150px;
 }
+
+.fix-image {
+	width: 200px;
+	height: 150px;
+}
 </style>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
@@ -62,16 +67,26 @@ textarea {
 							<form:select path="category" items="${categoryList}"
 								id="choices-multiple-remove-button" itemValue="category_id"
 								placeholder="Select" itemLabel="category_name"
-								value="${postForm.post_categories }" />
+								value="${postForm.category }" />
 							<form:errors path="category" class="text-danger" />
 						</div>
-						<div class="form-group">
-							<%-- <form:checkboxes items="${categoryList}" path="category"
-								itemValue="category_id" itemLabel="category_name" />
-							<br>
-							<form:errors path="category" class="text-danger" /> --%>
-						</div>
 						<!-- form-group end.// -->
+						<div class="form-group">
+							<label for="image">Image Upload</label>
+							<div style="display: flex; justify-content: flex-start;">
+								<div>
+									<input type="file" name="fileUpload" id="fileUpload"
+										accept="image/*" value="${imageData }"
+										class="input image-input" onchange="showImage.call(this)" />
+									<input name="imageData" type="hidden" id="imageData" value="" />
+								</div>
+								<div>
+									<img src="${postForm.post_img}" id="post_img" />
+								</div>
+							</div>
+							<form:input id="post-image" path="post_img" type="hidden"
+								value="${imageData}" />
+						</div>
 						<div class="form-group mt-3 text-center">
 							<button type="submit" name="confirm" class="btn btn-bg-color">Confirm</button>
 							<button type="submit" name="back" class="btn btn-bg-color">Back</button>
@@ -87,16 +102,42 @@ textarea {
 	<script type="text/javascript">
 		$(document).ready(
 				function() {
-
 					var multipleCancelButton = new Choices(
 							'#choices-multiple-remove-button', {
 								removeItemButton : true,
 								maxItemCount : 5,
 								searchResultLimit : 5,
-								renderChoiceLimit : 5
+								renderChoiceLimit : 10
 							});
 
+					$('#fileUpload').change(function() {
+						showImgThumbnail(this);
+					});
+
+					var valImg = $('#post-image').val();
+					if (valImg != '') {
+						$('#post_img').attr('class', 'fix-image');
+					}
 				});
+
+		function showImgThumbnail(fileInput) {
+			file = fileInput.files[0];
+			reader = new FileReader();
+			reader.onload = function(e) {
+				$('#post_img').attr('src', e.target.result);
+				$('#post_img').attr('class', 'fix-image');
+			};
+			reader.readAsDataURL(file);
+		}
+		function showImage() {
+			if (this.files && this.files[0]) {
+				var obj = new FileReader();
+				obj.onload = function(data) {
+					document.getElementById("imageData").value = data.target.result;
+				}
+				obj.readAsDataURL(this.files[0]);
+			}
+		}
 	</script>
 </body>
 </html>

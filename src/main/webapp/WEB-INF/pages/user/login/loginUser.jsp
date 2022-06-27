@@ -144,24 +144,24 @@ input[type=email], input[type=password]:placeholder {
 }
 
 input[type=email], input[type=password] {
-    background-color: #f6f6f6;
-    border: none;
-    color: #0d0d0d;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 5px;
-    width: 85%;
-    border: 2px solid #f6f6f6;
-    -webkit-transition: all 0.5s ease-in-out;
-    -moz-transition: all 0.5s ease-in-out;
-    -ms-transition: all 0.5s ease-in-out;
-    -o-transition: all 0.5s ease-in-out;
-    transition: all 0.5s ease-in-out;
-    -webkit-border-radius: 5px 5px 5px 5px;
-    border-radius: 5px 5px 5px 5px;
+	background-color: #f6f6f6;
+	border: none;
+	color: #0d0d0d;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 5px;
+	width: 85%;
+	border: 2px solid #f6f6f6;
+	-webkit-transition: all 0.5s ease-in-out;
+	-moz-transition: all 0.5s ease-in-out;
+	-ms-transition: all 0.5s ease-in-out;
+	-o-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
+	-webkit-border-radius: 5px 5px 5px 5px;
+	border-radius: 5px 5px 5px 5px;
 }
 
 /* ANIMATIONS */
@@ -188,9 +188,25 @@ input[type=email], input[type=password] {
 
 
 
+
+
+
+
+
+
+
+
 %
 {
 opacity
+
+
+
+
+
+
+
+
 
 
 
@@ -200,7 +216,23 @@ opacity
 
 
 
+
+
+
+
+
+
+
+
 1
+
+
+
+
+
+
+
+
 
 
 ;
@@ -209,12 +241,36 @@ opacity
 
 
 
+
+
+
+
+
+
+
+
 :
 
 
 
 
+
+
+
+
+
+
+
+
 none
+
+
+
+
+
+
+
+
 
 
 ;
@@ -223,12 +279,36 @@ transform
 
 
 
+
+
+
+
+
+
+
+
 :
 
 
 
 
+
+
+
+
+
+
+
+
 none
+
+
+
+
+
+
+
+
 
 
 ;
@@ -246,9 +326,25 @@ keyframes fadeInDown { 0% {
 
 
 
+
+
+
+
+
+
+
+
 %
 {
 opacity
+
+
+
+
+
+
+
+
 
 
 
@@ -258,7 +354,23 @@ opacity
 
 
 
+
+
+
+
+
+
+
+
 1
+
+
+
+
+
+
+
+
 
 
 ;
@@ -267,12 +379,36 @@ opacity
 
 
 
+
+
+
+
+
+
+
+
 :
 
 
 
 
+
+
+
+
+
+
+
+
 none
+
+
+
+
+
+
+
+
 
 
 ;
@@ -281,12 +417,36 @@ transform
 
 
 
+
+
+
+
+
+
+
+
 :
 
 
 
 
+
+
+
+
+
+
+
+
 none
+
+
+
+
+
+
+
+
 
 
 ;
@@ -406,18 +566,22 @@ to {
 
 			<!-- Login Form -->
 			<c:url value="/login" var="login" />
-        	<form:form action="${login}" method="POST" modelAttribute="loginForm">
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-				<form:input type="text" path="email" value="${loginForm.email }" id="email" class="fadeIn second" name="email" placeholder="Email" />
+			<form:form action="${login}" method="POST" modelAttribute="loginForm">
+				<input type="hidden" name="${_csrf.parameterName}"
+					value="${_csrf.token}" />
+				<form:input type="text" path="email" value="${loginForm.email }"
+					id="email" class="fadeIn second" name="email" placeholder="Email" />
 				<c:if test="${not empty emptyEmail }">
 					<div class="fadeIn fourth text-danger">${emptyEmail }</div>
 				</c:if>
 				<form:errors path="email" class="fadeIn fourth text-danger" />
-			 	<form:input type="password" path="password" value="${loginForm.email }" id="password" class="fadeIn third" name="password" placeholder="Password" />
-			 	<c:if test="${not empty emptyPassword }">
+				<form:input type="password" path="password"
+					value="${loginForm.email }" id="password" class="fadeIn third"
+					name="password" placeholder="Password" />
+				<c:if test="${not empty emptyPassword }">
 					<div class="fadeIn fourth text-danger">${emptyPassword }</div>
 				</c:if>
-			 	<form:errors path="password" class="fadeIn fourth text-danger" />
+				<form:errors path="password" class="fadeIn fourth text-danger" />
 				<c:if test="${not empty errorMsg }">
 					<div class="fadeIn fourth text-danger">${errorMsg }</div>
 				</c:if>
@@ -426,8 +590,9 @@ to {
 
 			<!-- Remind Password -->
 			<div id="formFooter">
-				<a class="underlineHover" href="<c:url value='register' />" >Create new account?</a>
-				<a class="underlineHover" href="#">Forgot Password?</a>
+				<a class="underlineHover" href="<c:url value='register' />">Create
+					new account?</a> <a class="underlineHover"
+					href="<c:url value='/password/reset' />">Forgot Password?</a>
 			</div>
 
 		</div>

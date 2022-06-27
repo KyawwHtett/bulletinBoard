@@ -3,6 +3,7 @@
              xmlns:context="http://www.springframework.org/schema/context"
              xmlns:beans="http://www.springframework.org/schema/beans"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:mvc="http://www.springframework.org/schema/mvc"
              xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/context  
@@ -15,6 +16,8 @@
 
     <http auto-config="true" use-expressions="true">
         <intercept-url pattern="/user/list" access="hasRole('ADMIN')"/>
+        <intercept-url pattern="/user/create/*" access="hasRole('ADMIN')"/>
+        <intercept-url pattern="/user/edit/*" access="hasRole('ADMIN')"/>
         <intercept-url pattern="/post/list" access="hasAnyRole('USER', 'ADMIN')"/>
         <intercept-url pattern="/category/**" access="hasRole('ADMIN')"/>
         <access-denied-handler error-page="/denied"/>

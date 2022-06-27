@@ -1,6 +1,7 @@
 package cgm.ojt.bulletin.bl.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -18,7 +19,7 @@ import cgm.ojt.bulletin.web.form.UserForm;
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserDao userDao;
-	
+
 	@Override
 	public void doSaveUser(UserForm userForm) {
 		User user = new User(userForm);
@@ -37,17 +38,42 @@ public class UserServiceImpl implements UserService {
 		if (user == null) {
 			return null;
 		}
-		UserDto userDto = new UserDto(this.userDao.dbFindUserByEmail(email));
+		UserDto userDto = new UserDto(user);
 		return userDto;
 	}
 
 	@Override
 	public boolean doIsEmailExist(String email) {
 		boolean result = false;
-		User user = this.userDao.dbFindUserByEmail(email);
+		User user = this.userDao.dbFindUserByAllEmail(email);
 		if (user != null) {
 			result = true;
 		}
 		return result;
+	}
+
+	@Override
+	public List<UserDto> doGetAllUser() {
+		return this.userDao.dbGetAllUser();
+	}
+
+	@Override
+	public void doDeleteUserById(int userId) {
+		this.userDao.dbDeleteUserById(userId);
+	}
+
+	@Override
+	public UserDto dbFindUserById(int userId) {
+		User user = this.userDao.dbFindUserById(userId);
+		if (user == null) {
+			return null;
+		}
+		UserDto userDto = new UserDto(user);
+		return userDto;
+	}
+
+	@Override
+	public void doUpdateUser(UserForm userForm) {
+		this.userDao.dbUpdateUser(userForm);
 	}
 }

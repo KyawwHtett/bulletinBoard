@@ -20,6 +20,15 @@
 textarea {
 	height: 150px;
 }
+
+.fix-image {
+	width: 200px;
+	height: 150px;
+}
+
+.img-center {
+	text-align: center;
+}
 </style>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
@@ -51,8 +60,8 @@ textarea {
 						</div>
 						<!-- form-row end.// -->
 						<div class="form-group">
-							<label>Post Description</label> <input class="form-control"
-								value="${postForm.description }" readonly />
+							<label>Post Description</label>
+							<textarea class="form-control" readonly>${postForm.description }</textarea>
 							<form:hidden path="description" name="description"
 								value="${postForm.description }" />
 						</div>
@@ -66,22 +75,25 @@ textarea {
 							<%-- <form:hidden path="category" name="categories"
 								value="${resultLists }" /> --%>
 
-							<form:hidden path="category" items="${resultLists}"
+							<form:hidden path="category" items="${resultLists }"
 								id="choices-multiple-remove-button" itemValue="category_id"
 								placeholder="Select" itemLabel="category_name"
 								value="${postForm.category }" />
 						</div>
-						<div class="form-group">
-							<%-- <checkboxes items="${categoryList}" path="category"
-								itemValue="category_id" itemLabel="category_name" />
-							<br>
-							<errors path="category" class="text-danger" /> --%>
+						<div class="form-group img-center">
+							<c:if test="${postForm.post_img != ''}">
+								<img src="${postForm.post_img }" id="post_img" class="fix-image" />
+								<form:input path="post_img" type="hidden" name="post_img"
+									value="${postForm.post_img }" />
+							</c:if>
+							<c:if test="${postForm.post_img == '' }">
+								<form:hidden path="post_img" value="${postForm.post_img }" />
+							</c:if>
 						</div>
 						<!-- form-group end.// -->
 						<div class="form-group mt-3 text-center">
 							<button type="submit" name="confirm" class="btn btn-bg-color">Create</button>
-							<button type="button" name="back" class="btn btn-bg-color"
-								onclick="history.back(2);">Backs</button>
+							<button type="submit" name="back" class="btn btn-bg-color">Back</button>
 						</div>
 						<!-- form-group// -->
 					</form:form>
@@ -89,21 +101,6 @@ textarea {
 			</div>
 			<!-- card.// -->
 		</div>
-
 	</div>
-	<script type="text/javascript">
-		$(document).ready(
-				function() {
-
-					var multipleCancelButton = new Choices(
-							'#choices-multiple-remove-button', {
-								removeItemButton : true,
-								maxItemCount : 5,
-								searchResultLimit : 5,
-								renderChoiceLimit : 5
-							});
-
-				});
-	</script>
 </body>
 </html>

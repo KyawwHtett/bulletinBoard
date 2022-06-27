@@ -35,8 +35,8 @@
 					aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				<a class="navbar-brand" href="#"> <i
-					class="fa-solid fa-shield-dog" style="font-size: 2em;"></i>
+				<a class="navbar-brand" href="#"> <i class="fa-solid fa-blog"
+					style="font-size: 2em;"></i>
 				</a>
 
 				<c:choose>
@@ -46,8 +46,8 @@
 							<c:choose>
 								<c:when test="${LOGIN_USER.type == '0'}">
 									<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-										<li class="nav-item active"><a class="nav-link" href="#">Home
-										</a></li>
+										<li class="nav-item active"><a class="nav-link"
+											href="<c:url value="/post/list" />">Home </a></li>
 									</ul>
 									<ul class="navbar-nav ">
 										<!-- PROFILE DROPDOWN - scrolling off the page to the right -->
@@ -55,9 +55,10 @@
 											class="nav-link dropdown-toggle" id="navDropDownLink"
 											data-toggle="dropdown" aria-haspopup="true"
 											aria-expanded="false"><i class="fa-solid fa-user"></i>
-												Kyaw Htet </a>
+												${LOGIN_USER.username } </a>
 											<div class="dropdown-menu" aria-labelledby="navDropDownLink">
-												<c:url value="/profile/detail?id=" var="profileDetail" />
+												<c:url value="/user/profile/${LOGIN_USER.id }"
+													var="profileDetail" />
 												<a class="dropdown-item" href="${profileDetail}">Profile</a>
 												<div class="dropdown-divider"></div>
 												<c:url value="/logout" var="logoutUrl" />
@@ -67,8 +68,8 @@
 								</c:when>
 								<c:otherwise>
 									<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-										<li class="nav-item active"><a class="nav-link" href="#">Home
-										</a></li>
+										<li class="nav-item active"><a class="nav-link"
+											href="<c:url value="/post/list" />">Home </a></li>
 										<li class="nav-item active"><a class="nav-link"
 											href="${pageContext.request.contextPath}/post/list">Posts
 										</a></li>
@@ -91,9 +92,10 @@
 											class="nav-link dropdown-toggle" id="navDropDownLink"
 											data-toggle="dropdown" aria-haspopup="true"
 											aria-expanded="false"><i class="fa-solid fa-user"></i>
-												kyawhtet </a>
+												${LOGIN_USER.username } </a>
 											<div class="dropdown-menu" aria-labelledby="navDropDownLink">
-												<c:url value="/profile/detail?id=" var="profileDetail" />
+												<c:url value="/user/profile/${LOGIN_USER.id }"
+													var="profileDetail" />
 												<a class="dropdown-item" href="${profileDetail}">Profile</a>
 												<div class="dropdown-divider"></div>
 												<c:url value="/logout" var="logoutUrl" />

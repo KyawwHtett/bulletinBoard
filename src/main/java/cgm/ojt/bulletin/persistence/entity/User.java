@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 
+import cgm.ojt.bulletin.bl.dto.UserDto;
 import cgm.ojt.bulletin.web.form.UserForm;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,7 +32,7 @@ public class User implements Serializable {
 
 	@Column(name = "username")
 	private String username;
-	
+
 	@Email
 	@Column(name = "email", unique = true)
 	private String email;
@@ -41,7 +42,7 @@ public class User implements Serializable {
 
 	@Column(name = "gender")
 	private String gender;
-	
+
 	@Column(name = "type")
 	private String type;
 
@@ -53,7 +54,7 @@ public class User implements Serializable {
 
 	@Column(name = "deleted_at")
 	private Date deleted_at;
-	
+
 	public User() {
 		super();
 	}
@@ -69,5 +70,18 @@ public class User implements Serializable {
 		this.created_at = userForm.getCreated_at();
 		this.updated_at = userForm.getUpdated_at();
 		this.deleted_at = userForm.getDeleted_at();
+	}
+
+	public User(UserDto userDto) {
+		super();
+		this.id = userDto.getId();
+		this.username = userDto.getUsername();
+		this.email = userDto.getEmail();
+		this.password = userDto.getPassword();
+		this.gender = userDto.getGender();
+		this.type = userDto.getType();
+		this.created_at = userDto.getCreated_at();
+		this.updated_at = userDto.getUpdated_at();
+		this.deleted_at = userDto.getDeleted_at();
 	}
 }

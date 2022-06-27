@@ -1,12 +1,11 @@
 package cgm.ojt.bulletin.web.form;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import cgm.ojt.bulletin.persistence.entity.Category;
 import cgm.ojt.bulletin.persistence.entity.Post;
@@ -24,7 +23,10 @@ public class PostForm {
 	private String title;
 
 	@NotEmpty
+	@Size(max = 255)
 	private String description;
+
+	private String post_img;
 
 	private int created_user_id;
 
@@ -39,11 +41,13 @@ public class PostForm {
 	private Date deleted_at;
 
 	private Set<Category> post_categories;
-	
+
 	private List<Category> categories;
-	
+
+	private String post_search;
+
 	@NotEmpty
-	String [] category;
+	String[] category;
 
 	public PostForm() {
 		super();

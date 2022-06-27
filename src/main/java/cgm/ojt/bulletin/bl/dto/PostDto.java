@@ -17,12 +17,14 @@ public class PostDto {
 	private int post_id;
 	private String title;
 	private String description;
+	private String post_img;
 	private int created_user_id;
 	private Date created_at;
 	private int updated_user_id;
 	private Date updated_at;
 	private int deleted_user_id;
 	private Date deleted_at;
+	private String date;
 	private Set<Category> post_categories;
 	private List<Category> categories;
 	String[] category;
@@ -36,6 +38,7 @@ public class PostDto {
 		this.post_id = post.getPost_id();
 		this.title = post.getTitle();
 		this.description = post.getDescription();
+		this.post_img = post.getPost_img();
 		this.created_user_id = post.getCreated_user_id();
 		this.created_at = post.getCreated_at();
 		this.updated_user_id = post.getUpdated_user_id();

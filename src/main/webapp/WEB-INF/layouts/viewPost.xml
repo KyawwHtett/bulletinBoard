@@ -22,4 +22,16 @@
         <put-attribute name="body"
             value="/WEB-INF/pages/post/create/createPostConfirm.jsp" />
     </definition>
+    <!-- editPost -->
+    <definition name="editPost" extends="template1">
+        <put-attribute name="title" value="editPost" />
+        <put-attribute name="body"
+            value="/WEB-INF/pages/post/edit/editPost.jsp" />
+    </definition>
+    <!-- editPostConfirm -->
+    <definition name="editPostConfirm" extends="template1">
+        <put-attribute name="title" value="editPostConfirm" />
+        <put-attribute name="body"
+            value="/WEB-INF/pages/post/edit/editPostConfirm.jsp" />
+    </definition>
 </tiles-definitions>

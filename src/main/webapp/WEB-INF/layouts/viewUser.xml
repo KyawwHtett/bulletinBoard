@@ -28,11 +28,41 @@
 		<put-attribute name="body"
 			value="/WEB-INF/pages/user/create/createUser.jsp" />
 	</definition>
+	<!-- createUserConfirm -->
+	<definition name="createUserConfirm" extends="template1">
+		<put-attribute name="title" value="createUserConfirm" />
+		<put-attribute name="body"
+			value="/WEB-INF/pages/user/create/createUserConfirm.jsp" />
+	</definition>
 	<!-- listUser -->
 	<definition name="listUser" extends="template1">
 		<put-attribute name="title" value="listUser" />
 		<put-attribute name="body"
 			value="/WEB-INF/pages/user/list/listUser.jsp" />
+	</definition>
+	<!-- editUser -->
+	<definition name="editUser" extends="template1">
+		<put-attribute name="title" value="editUser" />
+		<put-attribute name="body"
+			value="/WEB-INF/pages/user/edit/editUser.jsp" />
+	</definition>
+	<!-- editUserConfirm -->
+	<definition name="editUserConfirm" extends="template1">
+		<put-attribute name="title" value="editUserConfirm" />
+		<put-attribute name="body"
+			value="/WEB-INF/pages/user/edit/editUserConfirm.jsp" />
+	</definition>
+	<!-- editProfile -->
+	<definition name="editProfile" extends="template1">
+		<put-attribute name="title" value="editProfile" />
+		<put-attribute name="body"
+			value="/WEB-INF/pages/user/profile/editProfile.jsp" />
+	</definition>
+	<!-- editProfileConfirm -->
+	<definition name="editProfileConfirm" extends="template1">
+		<put-attribute name="title" value="editProfileConfirm" />
+		<put-attribute name="body"
+			value="/WEB-INF/pages/user/profile/editProfileConfirm.jsp" />
 	</definition>
 	<!-- denied -->
 	<definition name="accessDenied" extends="template1">
