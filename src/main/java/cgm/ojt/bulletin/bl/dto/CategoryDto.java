@@ -1,7 +1,5 @@
 package cgm.ojt.bulletin.bl.dto;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import cgm.ojt.bulletin.persistence.entity.Category;

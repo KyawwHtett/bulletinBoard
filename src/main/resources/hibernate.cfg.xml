@@ -9,6 +9,5 @@
 		<mapping class="cgm.ojt.bulletin.persistence.entity.Post" />
 		<mapping class="cgm.ojt.bulletin.persistence.entity.Category" />
 		<mapping class="cgm.ojt.bulletin.persistence.entity.PasswordReset" />
-		<!-- <mapping class="cgm.ojt.bulletin.persistence.entity.Post_Category" /> -->
 	</session-factory>
 </hibernate-configuration> 

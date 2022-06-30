@@ -22,4 +22,6 @@ public interface PostService {
 	List<PostDto> doGetAllPostBySearchInput(String post_search);
 
 	void doDownloadAllPost(HttpServletResponse response) throws IOException;
+
+	void doDeletePost(Integer postId);
 }

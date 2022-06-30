@@ -7,16 +7,8 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<style type="text/css">
-.bg-color {
-	background-color: #f6f6f6;
-	color: #56baed;
-}
-
-.btn-bg-color {
-	background-color: #56baed;
-}
-</style>
+<link rel="stylesheet"
+	href="<c:url value='/resources/css/register.css'/>">
 </head>
 <body>
 	<div class="row justify-content-center mt-5">
@@ -64,10 +56,10 @@
 						<!-- form-group end.// -->
 						<!-- form-group end.// -->
 						<div class="form-group mt-3 text-center">
-							<button type="submit" class="btn btn-block btn-bg-color">
-								Register</button>
-							<button type="button" class="btn btn-block btn-bg-color"
-								onclick="history.back(1);">Back</button>
+							<button type="submit" name="register"
+								class="btn btn-bg-color text-white">Register</button>
+							<button type="submit" name="back"
+								class="btn btn-bg-color text-white">Back</button>
 						</div>
 						<!-- form-group// -->
 					</form:form>
@@ -76,8 +68,6 @@
 			</div>
 			<!-- card.// -->
 		</div>
-		<!-- col.//-->
-
 	</div>
 </body>
 </html>

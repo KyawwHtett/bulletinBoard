@@ -11,22 +11,3 @@
 .pagination-sec {
 	margin: 0 auto;
 }
-
-/* create post  */
-.bg-color {
-	background-color: #f6f6f6;
-	color: #56baed;
-}
-
-.btn-bg-color {
-	background-color: #56baed;
-}
-
-textarea {
-	height: 150px;
-}
-
-.fix-image {
-	width: 200px;
-	height: 150px;
-}

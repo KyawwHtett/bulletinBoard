@@ -79,7 +79,8 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public List<PostDto> doGetAllPostBySearchInput(String post_search) {
-		List<Post> listPost = this.postDao.dbGetAllPostBySearchInput(post_search);
+		System.out.println(post_search);
+		List<Post> listPost = this.postDao.dbGetAllPostBySearchInput(post_search.trim());
 		List<PostDto> postDtoList = new ArrayList<PostDto>();
 		for (Post post : listPost) {
 			PostDto postDto = new PostDto();
@@ -92,6 +93,34 @@ public class PostServiceImpl implements PostService {
 			postDtoList.add(postDto);
 		}
 		return postDtoList;
+	}
+
+	@SuppressWarnings("resource")
+	@Override
+	public List<PostDto> doGetAllSearchPost(int currentPage, int recordsPerPage, PostForm postForm) throws IOException {
+		List<PostDto> resultPostList = new ArrayList<PostDto>();
+		if (postForm.getPost_search() != null) {
+			postForm.setPost_search(postForm.getPost_search().trim());
+		}
+		List<Post> postList = this.postDao.dbGetAllSearchPost(currentPage, recordsPerPage, postForm);
+		for (Post post : postList) {
+			PostDto newPostDto = new PostDto(post);
+			if (newPostDto.getPost_img() != null) {
+				String postImgPath = newPostDto.getPost_img();
+				File postImgFile = new File(postImgPath);
+				newPostDto.setPost_img(null);
+				if (postImgFile.exists()) {
+					FileInputStream fis = new FileInputStream(postImgFile);
+					byte byteArray[] = new byte[(int) postImgFile.length()];
+					fis.read(byteArray);
+					String imageString = "data:image/png;base64," + Base64.encodeBase64String(byteArray);
+					newPostDto.setPost_img(imageString);
+				}
+			}
+			newPostDto.setDate(prettyTimeFormat(post.getUpdated_at()));
+			resultPostList.add(newPostDto);
+		}
+		return resultPostList;
 	}
 
 	@Override
@@ -170,29 +199,11 @@ public class PostServiceImpl implements PostService {
 		this.postDao.dbUpdatePost(this.getPostUpdate(postDto, postImgPath));
 	}
 
-	@SuppressWarnings("resource")
 	@Override
-	public List<PostDto> doGetAllSearchPost(int currentPage, int recordsPerPage, PostForm postForm) throws IOException {
-		List<PostDto> resultPostList = new ArrayList<PostDto>();
-		List<Post> postList = this.postDao.dbGetAllSearchPost(currentPage, recordsPerPage, postForm);
-		for (Post post : postList) {
-			PostDto newPostDto = new PostDto(post);
-			if (newPostDto.getPost_img() != null) {
-				String postImgPath = newPostDto.getPost_img();
-				File postImgFile = new File(postImgPath);
-				newPostDto.setPost_img(null);
-				if (postImgFile.exists()) {
-					FileInputStream fis = new FileInputStream(postImgFile);
-					byte byteArray[] = new byte[(int) postImgFile.length()];
-					fis.read(byteArray);
-					String imageString = "data:image/png;base64," + Base64.encodeBase64String(byteArray);
-					newPostDto.setPost_img(imageString);
-				}
-			}
-			newPostDto.setDate(prettyTimeFormat(post.getUpdated_at()));
-			resultPostList.add(newPostDto);
-		}
-		return resultPostList;
+	public void doDeletePost(Integer postId) {
+		Post post = this.postDao.dbGetPostById(postId);
+		post.setDeleted_at(new Date());
+		this.postDao.dbUpdatePost(post);
 	}
 
 	private String prettyTimeFormat(Date date) {
@@ -206,7 +217,6 @@ public class PostServiceImpl implements PostService {
 
 		for (String categoryId : postDto.getCategory()) {
 			categoryId = categoryId.replaceAll("[^\\d.]", "");
-			System.out.println(categoryId);
 
 			for (Category category : categoryList) {
 				if (Integer.parseInt(categoryId) == category.getCategory_id()) {

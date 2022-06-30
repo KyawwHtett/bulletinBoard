@@ -9,8 +9,6 @@ public interface PostDao {
 
 	int dbSavePost(Post post);
 
-	void dbSavePostCategory(int id, int categoryId);
-
 	List<Post> dbGetAllPost();
 
 	Post dbGetPostById(Integer postId);

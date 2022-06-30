@@ -132,6 +132,13 @@ public class LoginController {
 		return mv;
 	}
 
+	@RequestMapping(value = "/register/confirm", params = "back", method = RequestMethod.POST)
+	public ModelAndView backRegisterConfirm(@ModelAttribute("registerConfirmForm") RegisterForm registerForm) {
+		ModelAndView backregisterForm = new ModelAndView("registerUser");
+		backregisterForm.addObject("registerUserForm", registerForm);
+		return backregisterForm;
+	}
+
 	@RequestMapping(value = "logout", method = RequestMethod.GET)
 	public String logout(HttpServletRequest request) {
 		authService.doLogout(request);

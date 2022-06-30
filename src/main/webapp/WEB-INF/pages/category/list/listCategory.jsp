@@ -7,11 +7,8 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<style type="text/css">
-div.dataTables_wrapper div.dataTables_paginate ul.pagination {
-	justify-content: center;
-}
-</style>
+<link rel="stylesheet"
+	href="<c:url value='/resources/css/datatable.css'/>">
 </head>
 <body>
 	<div class="card text-center col-md-8 mt-5" style="margin: 0 auto;">
@@ -43,26 +40,14 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 							<th scope="row">${index.index+1 }</th>
 							<td>${category.category_name }</td>
 							<td><a class="btn btn-outline-info"
-								href='<c:url value='/category/edit?id=${category.category_id }' ></c:url>'>Edit</a></td>
+								href='<c:url value='/category/edit?id=${category.category_id }' ></c:url>'>Edit</a>
+							</td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 		</div>
 	</div>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			var table = $('#category-table').DataTable({
-				"paging" : true,
-				"pageLength" : 5,
-				"bLengthChange" : false,
-				"bAutoWidth" : false,
-				"dom" : 'rtp'
-			});
-			$('#categoryTableSearch').keyup(function() {
-				table.search($(this).val()).draw();
-			});
-		});
-	</script>
+	<script src="<c:url value='/resources/js/datatable.js'/>"></script>
 </body>
 </html>

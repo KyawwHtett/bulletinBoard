@@ -7,29 +7,11 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<style type="text/css">
-.bg-color {
-	background-color: #f6f6f6;
-	color: #56baed;
-}
-
-.btn-bg-color {
-	background-color: #56baed;
-}
-
-textarea {
-	height: 150px;
-}
-
-.fix-image {
-	width: 200px;
-	height: 150px;
-}
-</style>
+<title>Insert title here</title>
+<link rel="stylesheet"
+	href="<c:url value='/resources/css/register.css'/>">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
-<script
-	src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
 </head>
 <body>
 	<div class="row justify-content-center mt-5">
@@ -116,45 +98,8 @@ textarea {
 		</div>
 
 	</div>
-	<script type="text/javascript">
-		$(document).ready(
-				function() {
-					var multipleCancelButton = new Choices(
-							'#choices-multiple-remove-button', {
-								removeItemButton : true,
-								maxItemCount : 5,
-								searchResultLimit : 5,
-								renderChoiceLimit : 10
-							});
-
-					$('#fileUpload').change(function() {
-						showImgThumbnail(this);
-					});
-
-					var valImg = $('#post-image').val();
-					if (valImg != '') {
-						$('#post_img').attr('class', 'fix-image');
-					}
-				});
-
-		function showImgThumbnail(fileInput) {
-			file = fileInput.files[0];
-			reader = new FileReader();
-			reader.onload = function(e) {
-				$('#post_img').attr('src', e.target.result);
-				$('#post_img').attr('class', 'fix-image');
-			};
-			reader.readAsDataURL(file);
-		}
-		function showImage() {
-			if (this.files && this.files[0]) {
-				var obj = new FileReader();
-				obj.onload = function(data) {
-					document.getElementById("imageData").value = data.target.result;
-				}
-				obj.readAsDataURL(this.files[0]);
-			}
-		}
-	</script>
+	<script src="<c:url value='/resources/js/fileUpload.js'/>"></script>
+	<script
+		src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
 </body>
 </html>

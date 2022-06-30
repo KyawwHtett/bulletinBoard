@@ -7,24 +7,16 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<style type="text/css">
-.bg-color {
-	background-color: #f6f6f6;
-	color: #56baed;
-}
-
-.btn-bg-color {
-	background-color: #56baed;
-}
-</style>
+<link rel="stylesheet"
+	href="<c:url value='/resources/css/register.css'/>">
 </head>
 <body>
 	<div class="row justify-content-center mt-5">
 		<div class="col-md-4">
 			<div class="card">
 				<header class="card-header bg-color">
-					<h4 class="card-title mt-2 text-center">Create Category Confirm
-						Confirm</h4>
+					<h4 class="card-title mt-2 text-center">Create Category
+						Confirm Confirm</h4>
 				</header>
 				<article class="card-body">
 					<c:url value="/category/update" var="editCategoryConfirm"></c:url>
@@ -56,7 +48,6 @@
 			<!-- card.// -->
 		</div>
 		<!-- col.//-->
-
 	</div>
 </body>
 </html>

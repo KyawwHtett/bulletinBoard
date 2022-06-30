@@ -7,16 +7,8 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<style type="text/css">
-.bg-color {
-	background-color: #f6f6f6;
-	color: #56baed;
-}
-
-.btn-bg-color {
-	background-color: #56baed;
-}
-</style>
+<link rel="stylesheet"
+	href="<c:url value='/resources/css/register.css'/>">
 </head>
 <body>
 	<div class="row justify-content-center mt-5">
@@ -67,7 +59,8 @@
 						<!-- form-group end.// -->
 						<div class="form-group">
 							<label>Password : </label> <input type="password"
-								class="form-check-label border-0" value="${userForm.password }" readonly />
+								class="form-check-label border-0" value="${userForm.password }"
+								readonly />
 							<form:hidden class="form-control" path="password"
 								value="${userForm.password }" />
 						</div>
@@ -84,7 +77,6 @@
 			<!-- card.// -->
 		</div>
 		<!-- col.//-->
-
 	</div>
 </body>
 </html>

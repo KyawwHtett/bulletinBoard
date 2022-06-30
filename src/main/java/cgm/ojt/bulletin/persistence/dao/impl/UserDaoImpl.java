@@ -89,4 +89,13 @@ public class UserDaoImpl implements UserDao {
 			this.sessionFactory.getCurrentSession().update(user);
 		}
 	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public List<User> dbGetAllUsers() {
+		StringBuffer query = new StringBuffer(SELECT_USER_LIST_HQL);
+		Query queryUserList = this.sessionFactory.getCurrentSession().createQuery(query.toString());
+		List<User> userList = (List<User>) queryUserList.getResultList();
+		return userList;
+	}
 }

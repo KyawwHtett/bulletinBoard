@@ -1,7 +1,9 @@
 package cgm.ojt.bulletin.web.controller;
 
+import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -13,7 +15,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import cgm.ojt.bulletin.bl.dto.UserDto;
 import cgm.ojt.bulletin.bl.service.AuthenticationService;
@@ -185,6 +190,25 @@ public class UserController {
 		ModelAndView deleteUser = new ModelAndView("redirect:/user/list");
 		this.userService.doDeleteUserById(userId);
 		return deleteUser;
+	}
+
+	@RequestMapping(value = "/user/import", method = RequestMethod.GET)
+	public ModelAndView getUploadExcel() {
+		return new ModelAndView("redirect:/user/list");
+	}
+
+	@RequestMapping(value = "/user/import", method = RequestMethod.POST)
+	public ModelAndView uploadExcel(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
+			throws IOException {
+		ModelAndView userImportView = new ModelAndView("redirect:/user/list");
+		redirectAttributes.addFlashAttribute("fileImportMsg", this.userService.doImportUser(file));
+		return userImportView;
+	}
+	
+	@RequestMapping(value = "/user/export", method = RequestMethod.GET)
+	public ModelAndView exportUser(HttpServletResponse response) throws IOException {
+		this.userService.doDownloadAllUser(response);
+		return null;
 	}
 
 	@RequestMapping(value = "/denied", method = RequestMethod.GET)

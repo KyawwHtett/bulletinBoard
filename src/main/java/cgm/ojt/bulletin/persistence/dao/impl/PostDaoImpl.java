@@ -1,6 +1,5 @@
 package cgm.ojt.bulletin.persistence.dao.impl;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -20,9 +19,11 @@ import cgm.ojt.bulletin.web.form.PostForm;
 public class PostDaoImpl implements PostDao {
 	private static final String SELECT_POST_LIST_HQL = "SELECT p FROM Post p ";
 
-	private static final String SELECT_POST_BY_INPUT = "WHERE p.title LIKE :search OR p.description LIKE :search ";
+	private static final String SELECT_POST_BY_INPUT = "WHERE (p.title LIKE :search OR p.description LIKE :search) AND p.deleted_at = null ";
 
-	private static final String ORDER_BY_DESC = "ORDER BY p.post_id DESC";
+	private static final String ORDER_BY_DESC_SEARCH = "ORDER BY p.post_id DESC";
+
+	private static final String ORDER_BY_DESC = "WHERE p.deleted_at = null ORDER BY p.post_id DESC";
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -34,16 +35,10 @@ public class PostDaoImpl implements PostDao {
 		return (int) this.sessionFactory.getCurrentSession().save(post);
 	}
 
-	@Override
-	public void dbSavePostCategory(int id, int categoryId) {
-		// TODO Auto-generated method stub
-
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Post> dbGetAllPost() {
-		String postQuery = "SELECT p FROM Post p";
+		String postQuery = "SELECT p FROM Post p WHERE p.deleted_at = null";
 		Query queryUserList = this.sessionFactory.getCurrentSession().createQuery(postQuery);
 		List<Post> postList = queryUserList.getResultList();
 		return postList;
@@ -78,6 +73,7 @@ public class PostDaoImpl implements PostDao {
 			posts.setPost_categories(post.getPost_categories());
 			posts.setUpdated_user_id(post.getUpdated_user_id());
 			posts.setUpdated_at(post.getUpdated_at());
+			posts.setDeleted_at(post.getDeleted_at());
 			this.sessionFactory.getCurrentSession().update(posts);
 		}
 	}
@@ -99,7 +95,7 @@ public class PostDaoImpl implements PostDao {
 		StringBuffer query = new StringBuffer(SELECT_POST_LIST_HQL);
 		if (postForm.getPost_search() != null) {
 			query.append(SELECT_POST_BY_INPUT);
-			query.append(ORDER_BY_DESC);
+			query.append(ORDER_BY_DESC_SEARCH);
 		} else {
 			query.append(ORDER_BY_DESC);
 		}
@@ -109,9 +105,4 @@ public class PostDaoImpl implements PostDao {
 		}
 		return queryPostList;
 	}
-
-//	@Override
-//	public void dbSavePostCategory(int id, int categoryId) {
-//		String insertHql = "INSERT INTO post_categories(post_id,category_id) VALUES('"+id+"',"+categoryId+"')";
-//	}
 }

@@ -7,16 +7,8 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<style type="text/css">
-.bg-color {
-	background-color: #f6f6f6;
-	color: #56baed;
-}
-
-.btn-bg-color {
-	background-color: #56baed;
-}
-</style>
+<link rel="stylesheet"
+	href="<c:url value='/resources/css/register.css'/>">
 </head>
 <body>
 	<div class="row justify-content-center mt-5">

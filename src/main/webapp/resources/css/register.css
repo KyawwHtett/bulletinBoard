@@ -1,0 +1,23 @@
+@charset "ISO-8859-1";
+
+.bg-color {
+	background-color: #f6f6f6;
+	color: #56baed;
+}
+
+.btn-bg-color {
+	background-color: #56baed;
+}
+
+textarea {
+	height: 150px !important;
+}
+
+.fix-image {
+	width: 200px;
+	height: 150px;
+}
+
+.img-center {
+	text-align: center;
+}

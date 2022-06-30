@@ -7,16 +7,13 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<style type="text/css">
-div.dataTables_wrapper div.dataTables_paginate ul.pagination {
-	justify-content: center;
-}
-</style>
+<link rel="stylesheet"
+	href="<c:url value='/resources/css/datatable.css'/>">
 </head>
 <body>
-	<div class="card text-center col-md-10 mt-5" style="margin: 0 auto;">
+	<div class="card col-md-10 mt-5" style="margin: 0 auto;">
 		<div class="card-header">
-			<ul class="nav nav-pills card-header-pills">
+			<ul class="nav nav-pills card-header-pills" style="float: left;">
 				<li><input type="text" class="form form-control"
 					id="userTableSearch" placeholder="Search..."></li>
 				<li class="user-btn ml-3">
@@ -26,7 +23,26 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 					href="<c:url value='/user/create' />"> <b>+</b> Add
 				</a></li>
 			</ul>
+			<div style="float: right;">
+				<a class="btn btn-info text-white ml-3"
+					href="<c:url value='/user/export' />"> Export </a>
+			</div>
 		</div>
+		<c:url value="/user/import?${_csrf.parameterName}=${_csrf.token}"
+			var="userImport"></c:url>
+		<form action="${userImport }" method="POST"
+			enctype="multipart/form-data">
+			<div class="col-md-4 mt-2">
+				<div style="display: flex; gap: 1rem;">
+					<input class="form-control" name="file" type="file" accept=".xlsx"
+						id="userImportExcel"> <input type="submit" value="Import"
+						class="btn btn-info text-white" />
+				</div>
+				<c:if test="${not empty fileImportMsg }">
+					<span class="text-danger">${fileImportMsg }</span>
+				</c:if>
+			</div>
+		</form>
 		<div class="card-body">
 			<table class="table table-hover" id="user-table">
 				<thead class="thead-light">
@@ -55,7 +71,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 							<td><a class="btn btn-sm btn-outline-info"
 								href='<c:url value='/user/edit/${user.id }' ></c:url>'>Edit</a>
 								<a class="btn btn-sm btn-outline-danger delete-btn" href="#"
-								data-bs-toggle="modal" data-user-id="n-${user.id }"
+								data-bs-toggle="modal" data-modal-id="n-${user.id }"
 								data-bs-target="#myModal">Delete</a></td>
 						</tr>
 					</c:forEach>
@@ -76,36 +92,13 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 							<button type="button" class="btn btn-secondary"
 								data-bs-dismiss="modal">Close</button>
 							<a class="btn btn-danger btn-ok"
-								href="<c:url value="/user/delete/id" />" id="user-delete-btn">OK</a>
+								href="<c:url value="/user/delete/id" />" id="modal-delete-btn">OK</a>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			var table = $('#user-table').DataTable({
-				"paging" : true,
-				"pageLength" : 5,
-				"bLengthChange" : false,
-				"bAutoWidth" : false,
-				"dom" : 'rtp'
-			});
-			$('#userTableSearch').keyup(function() {
-				table.search($(this).val()).draw();
-			});
-		});
-
-		$('.delete-btn').click(
-				function() {
-					$id = $(this).attr('data-user-id').substring(2);
-					$url = $('#user-delete-btn').attr('href') + "";
-					console.log($url);
-					$user_url = $url.substring(0, $url.lastIndexOf('/') + 1)
-							.concat($id);
-					$('#user-delete-btn').attr('href', $user_url);
-				});
-	</script>
+	<script src="<c:url value='/resources/js/datatable.js'/>"></script>
 </body>
 </html>

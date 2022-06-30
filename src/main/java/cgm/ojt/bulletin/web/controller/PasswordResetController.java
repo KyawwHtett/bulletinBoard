@@ -60,7 +60,7 @@ public class PasswordResetController {
 		passwordResetSentMailForm = this.passwordResetService
 				.createResetToken(passwordResetSentMailForm.getUser_email());
 		String url = getBaseUrl(request) + request.getServletPath() + "/" + passwordResetSentMailForm.getToken();
-		sendMail(url, passwordResetSentMailForm);
+		this.sendMail(url, passwordResetSentMailForm);
 		ModelAndView newModel = new ModelAndView("sendMailSuccess");
 		newModel.addObject("msg", messageSource.getMessage("M_SC_USR_0004", null, null));
 		return newModel;

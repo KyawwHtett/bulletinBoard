@@ -29,6 +29,7 @@
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/post/edit/*" />
+			<mvc:mapping path="/post/delete/*" />
 			<bean class="cgm.ojt.bulletin.bl.filter.PostAuthInterceptor" />
 		</mvc:interceptor>
 		<mvc:interceptor>
@@ -107,21 +108,22 @@
 			</props>
 		</property>
 	</bean>
-	
+
 	<!-- Mail Config -->
-    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="username" value="${mail.username}"/>
-        <property name="password" value="${mail.password}"/>
-        <property name="javaMailProperties">
-            <props>
-                <prop key="mail.transport.protocol">${mail.protocol}</prop>
-                <prop key="mail.smtp.host">${mail.host}</prop>
-                <prop key="mail.smtp.port">${mail.port}</prop>
-                <prop key="mail.smtp.auth">true</prop>
-                <prop key="mail.smtp.starttls.enable">true</prop>
-            </props>
-        </property>
-    </bean>
+	<bean id="javaMailSender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="username" value="${mail.username}" />
+		<property name="password" value="${mail.password}" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.transport.protocol">${mail.protocol}</prop>
+				<prop key="mail.smtp.host">${mail.host}</prop>
+				<prop key="mail.smtp.port">${mail.port}</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+			</props>
+		</property>
+	</bean>
 
 	<!-- for managing transactions -->
 	<tx:annotation-driven
@@ -143,6 +145,13 @@
 
 	<bean id="bCryptPasswordEncoder"
 		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+	</bean>
+
+	<!-- upload File -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- setting maximum upload size -->
+		<property name="maxUploadSize" value="2000000" />
 	</bean>
 
 	<bean id="pagedListHolder"

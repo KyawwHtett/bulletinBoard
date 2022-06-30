@@ -23,4 +23,6 @@ public interface UserDao {
 	public User dbFindUserByAllEmail(String email);
 
 	public void dbUpdateUser(UserForm userForm);
+
+	public List<User> dbGetAllUsers();
 }
